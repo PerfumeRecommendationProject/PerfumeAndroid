@@ -9,7 +9,6 @@ import com.example.perfumeproject.R
 import com.example.perfumeproject.databinding.ActivityLoginBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.home.HomeActivity
-import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +52,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.apply {
             btnLogin.setOnClickListener {
                 Timber.e("dd?")
-                LoginClient.instance.run {
+                UserApiClient.instance.run {
                     if (isKakaoTalkLoginAvailable(this@LoginActivity)) {
                         loginWithKakaoTalk(this@LoginActivity, callback = callback)
                         Timber.e("ddd?")

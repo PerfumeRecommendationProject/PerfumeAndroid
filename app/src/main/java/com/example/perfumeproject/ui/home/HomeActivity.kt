@@ -11,7 +11,7 @@ import com.example.perfumeproject.databinding.ActivityLoginBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.perfumeproject.util.ConfirmDialog
-import com.kakao.sdk.auth.LoginClient
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     },
                     rightText = getString(R.string.test_warning_btn_right_text),
                     rightClickListener = {
-                        LoginClient.instance.run {
+                        UserApiClient.instance.run {
                             if (isKakaoTalkLoginAvailable(this@HomeActivity)) {
                                 loginWithKakaoTalk(this@HomeActivity, callback = baseCallback)
                             } else {
