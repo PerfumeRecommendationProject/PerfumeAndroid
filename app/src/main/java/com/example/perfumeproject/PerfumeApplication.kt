@@ -21,7 +21,7 @@ class PerfumeApplication : Application() {
         }
 
         fun getGlobalAppApplication() : PerfumeApplication {
-            checkNotNull(appContext) { }
+            checkNotNull(appContext) { "This Application does not inherit com.kakao.GlobalApplication" }
             return appContext!! as PerfumeApplication
         }
     }
