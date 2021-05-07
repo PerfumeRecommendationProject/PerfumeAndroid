@@ -1,6 +1,8 @@
 package com.example.perfumeproject.ui.base
 
 import android.content.Intent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.perfumeproject.PerfumeApplication
@@ -22,6 +24,9 @@ open class BaseViewModel @Inject constructor(
     private val perfumeRepository: PerfumeRepository
 ) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
+
+    internal val _loginIntent = MutableLiveData<Intent>()
+    val loginIntent: LiveData<Intent> = _loginIntent
 
     /** viewModelScope 에서 Exception 이 발생할 시 처리하는 핸들러 */
     val vmExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -49,11 +54,14 @@ open class BaseViewModel @Inject constructor(
 
 
     /** 카카오 로그인 서버 통신 */
-    open fun addUserInfo(token: String, personalityType: String?, userId: Long) {
+    open fun addUserInfo(token: String,userId: Long) {
         Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }.run {
+            _loginIntent.value = this
         }
+    }
 
 //        perfumeRepository.updateUser(token, personalityType, userId, {
 //            Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
@@ -66,7 +74,7 @@ open class BaseViewModel @Inject constructor(
 ////            _toastMeesageText.value = WinePickApplication.getGlobalApplicationContext()
 ////                .resources.getString(R.string.api_error)
 //        })
-    }
+
 
     /**
      * [Disposable] 객체를 [compositeDisposable] 에 넣는다.
@@ -82,6 +90,5 @@ open class BaseViewModel @Inject constructor(
      * 필수가 아니므로 추상화는 하지 않는다.
      */
     open fun onResume() {
-
     }
 }

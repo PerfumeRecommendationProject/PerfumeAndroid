@@ -8,9 +8,6 @@ import com.example.perfumeproject.data.AuthConstant.TOKEN_KEY
 import com.example.perfumeproject.util.SharedPrefs
 import javax.inject.Inject
 
-/**
- *  Koin을 사용한 AuthModule
- */
 class AuthManager @Inject constructor(val sharedPrefs: SharedPrefs) {
     var token: String
         get() {

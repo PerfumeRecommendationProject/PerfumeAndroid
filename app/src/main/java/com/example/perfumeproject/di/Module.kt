@@ -8,19 +8,23 @@ import com.example.perfumeproject.data.PerfumeRepository
 import com.example.perfumeproject.network.PerfumeService
 import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.perfumeproject.util.SharedPrefs
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -65,14 +69,15 @@ class ActivityModule {
      * ViewModelFactory 구현체 (impl) 를 만드는 클래스
      */
     class ViewModelFactoryImpl(
-        val application: PerfumeApplication,
+        val perfumeApplication: PerfumeApplication,
         val perfumeRepository: PerfumeRepository
-    ) : ViewModelProvider.AndroidViewModelFactory(application) {
+    ) : ViewModelProvider.AndroidViewModelFactory(perfumeApplication) {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return BaseViewModel(perfumeRepository) as T
         }
     }
 }
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -99,10 +104,15 @@ object NetworkModule {
      */
     @Provides
     @Singleton
-    fun providePerfumeInterceptor(authManager: AuthManager): Interceptor {
+    fun provideWinePickInterceptor(authManager: AuthManager): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
+            // wine/filter 인 경우, "?" 가 인코딩 되어있는지 확인 후 인코딩 풀어주기
             val request = chain.request()
             var newUrl = request.url.toString()
+            if (newUrl.contains("v2/api/wine/filter"))
+                newUrl = newUrl.replace("%3F", "?")
+
+
             val builder = chain.request().newBuilder()
                 .url(newUrl)
 
@@ -124,6 +134,7 @@ object NetworkModule {
             .build()
     }
 
+    /** Retrofit 객체를 생성하는 Provider 함수이다. */
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
@@ -133,19 +144,6 @@ object NetworkModule {
             .client(client)
             .build()
     }
-
-
-//    /** Retrofit 객체를 생성하는 Provider 함수이다. */
-//    @Provides
-//    @Singleton
-//    fun provideRetrofit(client: OkHttpClient): Retrofit {
-//        return Retrofit.Builder()
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .client(client)
-//            .build()
-//    }
-
 
     @Provides
     @Singleton
@@ -185,7 +183,13 @@ object RepositoryModule {
     ): PerfumeRepository {
         return PerfumeRepository(perfumeService, authManager)
     }
+}
 
+@Module
+@InstallIn(SingletonComponent::class)
+object DataSourceModule {
 
 }
+
+
 
