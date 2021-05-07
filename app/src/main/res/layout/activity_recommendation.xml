@@ -33,7 +33,7 @@
             android:id="@+id/tv_scrap_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가지고 있는 향수를\n모두 추가 해주세요."
+            android:text="원하는 향의 느낌과\n분위기를 설명해주세요. "
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20dp"

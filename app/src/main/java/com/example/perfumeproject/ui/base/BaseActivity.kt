@@ -56,8 +56,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
     @Inject
     lateinit var authManager: AuthManager
 
-    internal val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        Timber.e("ddd????")
+    internal val baseCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         Timber.e("error - ${error}, token- ${token}")
         if (error != null) {
             Timber.e("로그인 실패 ${error}")
@@ -69,7 +68,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
             }
             UserApiClient.instance.me { user, error ->
                 val kakaoId = user!!.id
-                viewModel?.addUserInfo(token.accessToken, kakaoId)
+                viewModel?.addKakaoUser(token.accessToken, kakaoId)
             }
             Timber.d("로그인성공 - 토큰 ${authManager.token}")
         }

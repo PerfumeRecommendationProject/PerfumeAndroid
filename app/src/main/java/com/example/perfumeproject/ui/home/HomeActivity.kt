@@ -36,9 +36,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                     rightClickListener = {
                         LoginClient.instance.run {
                             if (isKakaoTalkLoginAvailable(this@HomeActivity)) {
-                                loginWithKakaoTalk(this@HomeActivity, callback = callback)
+                                loginWithKakaoTalk(this@HomeActivity, callback = baseCallback)
                             } else {
-                                loginWithKakaoAccount(this@HomeActivity, callback = callback)
+                                loginWithKakaoAccount(this@HomeActivity, callback = baseCallback)
                             }
                         }
                         it.dismiss()

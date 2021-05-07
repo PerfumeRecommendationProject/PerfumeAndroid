@@ -54,7 +54,7 @@ open class BaseViewModel @Inject constructor(
 
 
     /** 카카오 로그인 서버 통신 */
-    open fun addUserInfo(token: String,userId: Long) {
+    open fun addKakaoUser(token: String,userId: Long) {
         Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
