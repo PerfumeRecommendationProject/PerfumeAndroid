@@ -59,6 +59,7 @@ open class BaseViewModel @Inject constructor(
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }.run {
+            Timber.e(token+userId)
             _loginIntent.value = this
         }
     }

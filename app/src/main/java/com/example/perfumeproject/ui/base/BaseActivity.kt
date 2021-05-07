@@ -57,6 +57,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
     lateinit var authManager: AuthManager
 
     internal val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        Timber.e("ddd????")
+        Timber.e("error - ${error}, token- ${token}")
         if (error != null) {
             Timber.e("로그인 실패 ${error}")
         } else if (token != null) {
@@ -80,6 +82,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         /** [uiScope] 사용 예 */
         uiScope.launch { }
+
 
         viewModel?.loginIntent?.observe(this, {
             startActivity(it)
