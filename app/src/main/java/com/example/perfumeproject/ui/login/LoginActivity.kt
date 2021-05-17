@@ -9,57 +9,48 @@ import com.example.perfumeproject.R
 import com.example.perfumeproject.databinding.ActivityLoginBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.home.HomeActivity
+import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.nexters.winepick.util.startActivity
+import org.koin.core.qualifier._q
 import timber.log.Timber
 
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     override val viewModel: LoginViewModel by viewModels<LoginViewModel>()
-
-     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        Timber.e("콜백??!ㅣㅏㅓ이마ㅓㄹ;")
-        Timber.e("error - ${error}, token- ${token}")
+    val kakaoCallback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Timber.e("로그인 실패 ${error}")
+            Timber.e("로그인 실패- $error")
         } else if (token != null) {
-            //Login Success
-            Timber.d("로그인 성공")
-            authManager.apply {
-                this.token = token.accessToken
-            }
-            UserApiClient.instance.me { user, error ->
-                val kakaoId = user!!.id
-
-                Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }.run {
-                    startActivity(this)
+            UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+                if (error != null) {
+                    Timber.e("토큰 정보 보기 실패 $error")
+                } else if (tokenInfo != null) {
+                    Timber.e("token - ${token.accessToken}, id - ${tokenInfo.id}")
+                    authManager.token = token.accessToken
+                    authManager.id = tokenInfo.id
+                    Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }.run {
+                        startActivity(this)
+                    }
                 }
-
             }
-            Timber.d("로그인성공 - 토큰 ${authManager.token}")
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.setVariable(BR.vm, viewModel)
         binding.apply {
             btnLogin.setOnClickListener {
-                Timber.e("dd?")
-                UserApiClient.instance.run {
-                    if (isKakaoTalkLoginAvailable(this@LoginActivity)) {
-                        loginWithKakaoTalk(this@LoginActivity, callback = callback)
-                        Timber.e("ddd?")
-                    } else {
-                        Timber.e("no kakao")
-                        loginWithKakaoAccount(this@LoginActivity, callback = callback)
-                    }
+                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LoginActivity)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this@LoginActivity, callback = kakaoCallback)
+                } else {
+                    UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = kakaoCallback)
                 }
             }
             tvGuest.setOnClickListener {
@@ -69,13 +60,4 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-    /** 카카오 로그인 서버 통신 */
-    private fun addUserInfo(token: String,userId: Long) {
-        Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }.run {
-            startActivity(this)
-        }
-    }
 }

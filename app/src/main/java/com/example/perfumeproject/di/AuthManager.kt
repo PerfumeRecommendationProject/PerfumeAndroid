@@ -33,7 +33,7 @@ class AuthManager @Inject constructor(val sharedPrefs: SharedPrefs) {
             sharedPrefs[EXPIRE_KEY] = value
         }
 
-    var id: Int
+    var id: Long
         get() {
             return sharedPrefs[ID, 0] ?: 0
         }
