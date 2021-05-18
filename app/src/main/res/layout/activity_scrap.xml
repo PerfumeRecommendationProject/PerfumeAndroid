@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_scrap"
             app:spanCount="3"
+            app:submitList="@{vm.perfumeData}"
             android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/rv_scrap"

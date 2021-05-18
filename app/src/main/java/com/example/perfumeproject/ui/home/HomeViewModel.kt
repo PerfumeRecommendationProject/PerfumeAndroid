@@ -11,6 +11,7 @@ import com.example.perfumeproject.ui.recommendation.RecommendationActivity
 import com.example.perfumeproject.ui.scrap.ScrapActivity
 import com.example.perfumeproject.ui.search.SearchActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,8 +53,6 @@ class HomeViewModel @Inject constructor(
             _loginWarningDlg.value = true
         }
     }
-
-
 
 
     /** UI 의 onDestroy 개념으로 생각하면 편할듯 */

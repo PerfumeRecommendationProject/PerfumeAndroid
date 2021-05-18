@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.example.perfumeproject.ui.recommend_result.RecommendationResultViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
+        tools:context=".ui.recommend_result.RecommendationResultActivity">
+
+
+
+        <TextView
+            android:id="@+id/tv_recommendation_result_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="@{@string/perfume_recommendation(vm.perfumeNum)}"
+            android:textColor="@color/black"
+            android:layout_marginVertical="24dp"
+            tools:text="향수 추천 결과 3"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_perfume_list"
+            submitList="@{vm.perfumeData}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recommendation_result_title"
+            tools:listitem="@layout/item_perfume" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

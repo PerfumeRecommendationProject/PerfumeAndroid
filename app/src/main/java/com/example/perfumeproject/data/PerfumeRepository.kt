@@ -1,12 +1,14 @@
 package com.example.perfumeproject.data
 
 
-import android.content.Intent
 import com.example.perfumeproject.PerfumeApplication
+import com.example.perfumeproject.data.request.KakaoLoginRequest
+import com.example.perfumeproject.data.request.ScrapRequest
+import com.example.perfumeproject.data.request.perfumeDescRequest
+import com.example.perfumeproject.data.response.KakaoLoginResponse
 import com.example.perfumeproject.di.AuthManager
 import com.example.perfumeproject.network.PerfumeService
-import com.example.perfumeproject.ui.home.HomeActivity
-import kr.co.nexters.winepick.util.safeEnqueue
+import com.example.perfumeproject.util.safeEnqueue
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,6 +19,100 @@ class PerfumeRepository @Inject constructor(
 
     init {
         val appContext = PerfumeApplication.getGlobalApplicationContext()
+    }
+
+
+    fun postKakaoLogin(
+        kakaoLoginRequest: KakaoLoginRequest,
+        onSuccess : (KakaoLoginResponse) -> Unit,
+        onFailure : () -> Unit
+    ) {
+        api.postKakaoLogin(kakaoLoginRequest).safeEnqueue(
+            onSuccess = { onSuccess(it.result!!)},
+            onFailure = { onFailure()},
+            onError = {onFailure()}
+        )
+    }
+
+    fun settingUser(
+        kakaoLoginRequest: KakaoLoginRequest,
+        successAction: (() -> Unit)? = null,
+        failAction: (() -> Unit)? = null
+    ) {
+        postKakaoLogin(
+                kakaoLoginRequest = kakaoLoginRequest,
+                onSuccess = {
+                    authManager.serverToken = it.token
+                    Timber.e("auth serverToken - ${authManager.serverToken}")
+                    authManager.autoLogin = true
+                    authManager.token = kakaoLoginRequest.kakaoToken
+                    authManager.id = kakaoLoginRequest.userId!!
+                    successAction?.let { it() }
+                },
+                onFailure = {
+                    authManager.autoLogin = false
+                    failAction?.let { it() }
+                }
+        )
+    }
+
+    fun getSearchPerfume(
+        p_name : String,
+        onSuccess: (List<PerfumeData>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.getSearchPerfume(p_name).safeEnqueue (
+                onSuccess = {onSuccess(it.result!!)},
+                onFailure = {onFailure()},
+                onError = {onFailure()}
+        )
+    }
+
+    fun putScrap(
+        scrapRequest: ScrapRequest,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.putScrap(scrapRequest).safeEnqueue(
+            onSuccess = {onSuccess()},
+            onFailure = {onFailure()},
+            onError = {onFailure()}
+        )
+    }
+
+    fun getScrapData(
+        onSuccess: (List<PerfumeData>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.getScrapData().safeEnqueue(
+            onSuccess = {onSuccess(it.result!!)},
+            onFailure = {onFailure()},
+            onError = {onFailure()}
+        )
+    }
+
+    fun getNewPerfumeList(
+        perfumeDescRequest: perfumeDescRequest,
+        onSuccess: (List<PerfumeData>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.getNewPerfumeList(perfumeDescRequest).safeEnqueue(
+            onSuccess = {onSuccess(it.result!!)},
+            onFailure = {onFailure()},
+            onError = {onFailure()}
+        )
+    }
+
+    fun postBasedPerfume(
+        scrapRequest: ScrapRequest,
+        onSuccess: (List<PerfumeData>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.postBasedPerfume(scrapRequest).safeEnqueue(
+            onSuccess = {onSuccess(it.result!!)},
+            onFailure = {onFailure()},
+            onError = {onFailure()}
+        )
     }
 
 
@@ -32,38 +128,4 @@ class PerfumeRepository @Inject constructor(
 //        )
 //    }
 
-
-//
-//    fun updateUser(
-//        token: String,
-//        personalityType: String?,
-//        userId: Long,
-//        successAction: (() -> Unit)? = null,
-//        failAction: (() -> Unit)? = null
-//    ) {
-//        postUser(
-//            data = AccessTokenData(token, personalityType!!, userId),
-//            onSuccess = {
-//                authManager.token = it.accessToken.toString()
-//                authManager.autoLogin = true
-//                authManager.id = it.id!!
-//                authManager.testType = it.personalityType!!
-//                successAction?.let { it() }
-//
-//                Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
-//                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                }.run {
-//                    PerfumeApplication.getGlobalApplicationContext().startActivity(this)
-//                }
-//            },
-//            onFailure = {
-//
-//                failAction?.let { it() }
-//
-//                // _toastMeesageText.value = WinePickApplication.getGlobalApplicationContext()
-//                //     .resources.getString(R.string.api_error)
-//            }
-//        )
-//    }
 }

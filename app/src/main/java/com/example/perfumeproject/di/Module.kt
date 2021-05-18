@@ -36,8 +36,7 @@ const val CONNECT_TIMEOUT = 15.toLong()
 const val WRITE_TIMEOUT = 15.toLong()
 const val READ_TIMEOUT = 15.toLong()
 
-const val BASE_URL = "http://padakpadak.run.goorm.io/"
-//const val TEST_URL = "http://padakpadak.run.goorm.io/"
+const val BASE_URL = "http://13.209.121.249/"
 
 /**
  * 코루틴을 활용하여 HTTP 요청을 보낼 시 활용하는 로직
@@ -106,15 +105,34 @@ object NetworkModule {
     @Singleton
     fun provideWinePickInterceptor(authManager: AuthManager): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
-            // wine/filter 인 경우, "?" 가 인코딩 되어있는지 확인 후 인코딩 풀어주기
             val request = chain.request()
             var newUrl = request.url.toString()
-            if (newUrl.contains("v2/api/wine/filter"))
-                newUrl = newUrl.replace("%3F", "?")
-
-
             val builder = chain.request().newBuilder()
                 .url(newUrl)
+
+            if (newUrl.contains("/perfume/search")) {
+                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
+                    addHeader("token", authManager.serverToken)
+                    url(newUrl)
+                }.build())
+            }
+
+            if (newUrl.contains("/scrap")) {
+                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
+                    addHeader("token", authManager.serverToken)
+                    url(newUrl)
+                }.build())
+            }
+
+
+            if (newUrl.contains("/perfume/recommend")) {
+                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
+                    addHeader("token", authManager.serverToken)
+                    url(newUrl)
+                }.build())
+            }
+
+
 
             return@Interceptor chain.proceed(builder.build())
         }

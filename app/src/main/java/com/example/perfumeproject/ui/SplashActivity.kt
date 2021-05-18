@@ -24,12 +24,7 @@ class SplashActivity(
         super.onCreate(savedInstanceState)
         uiScope.launch {
             delay(DURATION)
-            authManager.autoLogin = true
-            authManager.token = "1111"
             checkToken()
-
-
-
         }
     }
 

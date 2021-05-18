@@ -16,15 +16,12 @@
         tools:context=".ui.recommendation.RecommendationActivity"
         android:paddingHorizontal="24dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="완료"
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/check"
             android:layout_marginVertical="24dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:background="@drawable/bg_login_guest"
+            app:onSingleClick="@{vm::perfumeRecommendationItem}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
@@ -47,9 +44,11 @@
             android:background="@drawable/bg_login_guest"
             android:layout_marginVertical="40dp"
             android:textSize="20dp"
-            android:textAlignment="center"
+            android:padding="16dp"
             android:hint="원하는 향수의 느낌을 적어주세요 :)"
             android:maxLines="3"
+            android:gravity="left"
+            app:textChangedListener="@{vm.searchTextWatcher}"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="0dp"

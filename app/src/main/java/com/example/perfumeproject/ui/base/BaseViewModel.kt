@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.perfumeproject.PerfumeApplication
+import com.example.perfumeproject.R
 import com.example.perfumeproject.data.PerfumeRepository
+import com.example.perfumeproject.data.request.KakaoLoginRequest
 import com.example.perfumeproject.ui.home.HomeActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -33,6 +35,10 @@ open class BaseViewModel @Inject constructor(
         Timber.i("$coroutineContext $throwable")
     }
 
+    /** 토스트 메시지 */
+    internal val _toastMeesageText = MutableLiveData("")
+    val toastMessageText: LiveData<String> = _toastMeesageText
+
     /** 생성자 개념으로 생각하면 편할듯 */
     init {
         /**
@@ -55,26 +61,20 @@ open class BaseViewModel @Inject constructor(
 
     /** 카카오 로그인 서버 통신 */
     open fun addKakaoUser(token: String,userId: Long) {
-        Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }.run {
-            Timber.e(token+userId)
-            _loginIntent.value = this
-        }
+        perfumeRepository.settingUser(
+                kakaoLoginRequest = KakaoLoginRequest(userId = userId, kakaoToken = token),
+                successAction =  { Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
+                                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        }.run {
+                                            Timber.e(token+userId)
+                                            _loginIntent.value = this
+                                        } },
+                failAction =  {
+                    _toastMeesageText.value = PerfumeApplication.getGlobalApplicationContext()
+                            .resources.getString(R.string.api_error)
+        })
     }
-
-//        perfumeRepository.updateUser(token, personalityType, userId, {
-//            Intent(PerfumeApplication.appContext, HomeActivity::class.java).apply {
-//                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            }.run {
-////                _loginIntent.value = this
-//            }
-//        }, {
-////            _toastMeesageText.value = WinePickApplication.getGlobalApplicationContext()
-////                .resources.getString(R.string.api_error)
-//        })
 
 
     /**

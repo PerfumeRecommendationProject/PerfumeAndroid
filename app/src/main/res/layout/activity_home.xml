@@ -13,16 +13,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeActivity"
+        tools:context=".ui.detail.HomeActivity"
         android:paddingHorizontal="24dp">
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="스크랩 \n향수 보기"
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/folder"
+            android:scaleType="fitXY"
             android:layout_marginVertical="10dp"
-            android:textSize="16dp"
             app:onSingleClick="@{vm::ScrapClick}"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -62,6 +62,7 @@
             android:id="@+id/btn_perfume_search"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:layout_marginBottom="16dp"
             app:onSingleClick="@{vm::SearchClick}"
             app:layout_constraintBottom_toTopOf="@id/btn_perfume_recommendation"
@@ -77,6 +78,7 @@
             android:text="새로운 향수 추천 받기"
             android:textStyle="bold"
             android:textSize="16dp"
+            android:textColor="@color/white"
             android:background="@drawable/bg_12_pink"
             android:layout_marginBottom="28dp"
             app:layout_constraintBottom_toBottomOf="parent"

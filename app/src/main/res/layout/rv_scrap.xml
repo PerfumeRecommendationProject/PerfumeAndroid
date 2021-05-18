@@ -5,11 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
         <variable
             name="perfumeData"
             type="com.example.perfumeproject.data.PerfumeData" />
+
+        <variable
+            name="vm"
+            type="com.example.perfumeproject.ui.scrap.ScrapPerfumeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +24,7 @@
             android:id="@+id/img_perfume"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/colorPink"
+            app:imageGlide="@{perfumeData.image}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintDimensionRatio="1:1"/>

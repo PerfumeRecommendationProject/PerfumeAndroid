@@ -1,4 +1,4 @@
-package kr.co.nexters.winepick.util
+package com.example.perfumeproject.util
 
 import retrofit2.Call
 import retrofit2.Callback

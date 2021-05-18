@@ -3,7 +3,7 @@ package com.example.perfumeproject.ui.recommendation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.databinding.library.baseAdapters.BR
+import com.example.perfumeproject.BR
 import com.example.perfumeproject.R
 import com.example.perfumeproject.databinding.ActivityHomeBinding
 import com.example.perfumeproject.databinding.ActivityRecommendationBinding
