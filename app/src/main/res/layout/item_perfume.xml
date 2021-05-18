@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="perfumeData"
+            type="com.example.perfumeproject.data.PerfumeData" />
+
+
+        <variable
+            name="vm"
+            type="com.example.perfumeproject.ui.search.PerfumeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@{perfumeData.isSelected ? @drawable/bg_12_line_pink: @drawable/bg_12_line_gray}"
+        >
+
+
+        <ImageView
+            android:id="@+id/img_perfume_data"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:imageGlide="@{perfumeData.image}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_perfume_name"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_perfume_data"
+            android:text="@{perfumeData.p_name}"
+            tools:text="dddddddd"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toStartOf="@id/img_perfume_like"
+            android:layout_marginStart="16dp"/>
+        
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_perfume_name"
+            app:layout_constraintStart_toEndOf="@id/img_perfume_data"
+            tools:text="ddddddd"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/img_perfume_like"
+            android:textColor="@color/colorGray82"
+            android:text="@{perfumeData.brand}"
+            android:layout_marginStart="16dp" />
+
+
+        <ImageView
+            android:id="@+id/img_perfume_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@{perfumeData.likeYn? @drawable/like_success: @drawable/like_false}"
+            tools:src="@drawable/like_success"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="@{perfumeData.matchVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_perfume_data"
+            app:layout_constraintBottom_toBottomOf="parent">
+            
+            
+            <ProgressBar
+                android:id="@+id/pb_perfume_match"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:max="100"
+                android:min="0"
+                android:progress="@{perfumeData.matchNum}"
+                android:progressTint="@color/colorPink"
+                tools:progress="80"/>
+
+
+            <TextView
+                android:text="@{@string/match(perfumeData.matchNum)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="매칭율 80%"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPink"
+                app:layout_constraintBottom_toTopOf="@id/pb_perfume_match"
+                app:layout_constraintEnd_toEndOf="@id/pb_perfume_match"/>
+            
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

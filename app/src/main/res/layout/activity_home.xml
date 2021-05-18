@@ -13,21 +13,78 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginActivity"
+        tools:context=".ui.detail.HomeActivity"
         android:paddingHorizontal="24dp">
+
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/folder"
+            android:scaleType="fitXY"
+            android:layout_marginVertical="10dp"
+            app:onSingleClick="@{vm::ScrapClick}"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@drawable/bg_login_guest"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_app_name"
-            android:text="@string/app_name"
+            android:text="맞춤형 향수 추천 서비스"
             android:textSize="24dp"
+            android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="기존 향수와 비슷한 향수, 새로운 향수를\n추천해드립니다."
+            app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_12_blue"
+            android:id="@+id/btn_perfume_search"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="16dp"
+            app:onSingleClick="@{vm::SearchClick}"
+            app:layout_constraintBottom_toTopOf="@id/btn_perfume_recommendation"
+            android:text="기존 향수와 비슷한 향수 추천 받기"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+        <Button
+            android:id="@+id/btn_perfume_recommendation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="새로운 향수 추천 받기"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_12_pink"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:onSingleClick="@{vm::RecommendationClick}"
+            app:layout_constraintRight_toRightOf="parent"/>
 
 
 

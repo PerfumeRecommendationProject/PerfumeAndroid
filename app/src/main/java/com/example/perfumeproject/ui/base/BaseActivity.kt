@@ -55,8 +55,20 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
     @Inject
     lateinit var authManager: AuthManager
+    internal val callback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Timber.e("로그인 실패- $error")
+        } else if (token != null) {
+            UserApiClient.instance.me { user, error ->
+                val kakaoId = user!!.id
+                viewModel?.addKakaoUser(token.accessToken, kakaoId)
+            }
+            Timber.d("로그인성공 - 토큰 ${authManager.token}")
+        }
+    }
 
-    internal val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+    internal val baseCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        Timber.e("error - ${error}, token- ${token}")
         if (error != null) {
             Timber.e("로그인 실패 ${error}")
         } else if (token != null) {
@@ -67,7 +79,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
             }
             UserApiClient.instance.me { user, error ->
                 val kakaoId = user!!.id
-                viewModel?.addUserInfo(token.accessToken, kakaoId)
+                viewModel?.addKakaoUser(token.accessToken, kakaoId)
             }
             Timber.d("로그인성공 - 토큰 ${authManager.token}")
         }
@@ -80,6 +92,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         /** [uiScope] 사용 예 */
         uiScope.launch { }
+
 
         viewModel?.loginIntent?.observe(this, {
             startActivity(it)

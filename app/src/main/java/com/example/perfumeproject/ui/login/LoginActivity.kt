@@ -7,7 +7,7 @@ import com.example.perfumeproject.R
 import com.example.perfumeproject.databinding.ActivityLoginBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.home.HomeActivity
-import com.kakao.sdk.auth.LoginClient
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.nexters.winepick.util.startActivity
 
@@ -21,18 +21,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.setVariable(BR.vm, viewModel)
         binding.apply {
             btnLogin.setOnClickListener {
-                LoginClient.instance.run {
-                    if (isKakaoTalkLoginAvailable(this@LoginActivity)) {
-                        loginWithKakaoTalk(this@LoginActivity, callback = callback)
-                    } else {
-                        loginWithKakaoAccount(this@LoginActivity, callback = callback)
-                    }
+                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LoginActivity)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this@LoginActivity, callback = callback)
+                } else {
+                    UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
                 }
             }
             tvGuest.setOnClickListener {
                 authManager.token = "guest"
+                authManager.serverToken = "guest"
                 startActivity(HomeActivity::class, true)
             }
         }
     }
+
 }

@@ -8,6 +8,9 @@
     <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="colorGray">#f7f7f7</color>
+    <color name="colorGray">#eeeeee</color>
+    <color name="colorPink">#ff3985</color>
+    <color name="colorGray82">#828282</color>
+    <color name="colorBlack66">#66000000</color>
 
 </resources>

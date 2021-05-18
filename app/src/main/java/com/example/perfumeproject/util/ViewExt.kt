@@ -18,6 +18,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.perfumeproject.R
 import com.example.perfumeproject.util.OnSingleClickListener
 import kotlinx.coroutines.delay
@@ -117,6 +118,11 @@ fun setImageResource(imageView: ImageView, resource: Int) {
 fun setImageDrawableResource(imageView: ImageView, resource: Int) {
     val drawable = ResourcesCompat.getDrawable(imageView.context.resources, resource, null)
     imageView.setImageDrawable(drawable)
+}
+
+@BindingAdapter("imageGlide")
+fun setImageGlide(imageView: ImageView, resource: String) {
+    Glide.with(imageView).load(resource).into(imageView)
 }
 
 
