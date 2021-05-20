@@ -26,7 +26,6 @@ abstract class PerfumeViewModel constructor(
         val results: MutableList<PerfumeData> = _perfumeData.value?.toMutableList() ?: mutableListOf()
 
         results.add(perfumeData)
-
         _perfumeData.value = results
     }
 
@@ -78,6 +77,31 @@ abstract class PerfumeViewModel constructor(
             results.removeAt(replaceIndex)
             results.add(replaceIndex, prevPerfumeData.copy(likeYn = prevPerfumeData.clickedLikeYn))
             _perfumeData.value = results
+        }
+    }
+
+    fun selectedPerfumeData(prevPerfumeData: PerfumeData) {
+        val results: MutableList<PerfumeData> = _perfumeData.value?.toMutableList() ?: return
+        val replaceIndex = results.indexOf(prevPerfumeData)
+
+        if (replaceIndex == -1) {
+            Timber.i("$prevPerfumeData isn't exist")
+            return
+        } else {
+            for (i in 0 until results.size) {
+                results[i].isSelected =  false
+            }
+            for (i in 0 until results.size) {
+                Timber.e("selected !! ${results[i].isSelected}")
+            }
+            results.removeAt(replaceIndex)
+            results.add(replaceIndex, prevPerfumeData.copy(isSelected = prevPerfumeData.clickedSelected))
+
+            _perfumeData.value = results
+
+            for (i in 0 until results.size) {
+                Timber.e("selected22 !! ${results[i].isSelected}")
+            }
         }
     }
 

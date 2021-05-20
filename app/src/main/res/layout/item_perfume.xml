@@ -93,13 +93,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:max="100"
                 android:min="0"
-                android:progress="@{perfumeData.matchNum}"
+                android:progress="@{perfumeData.similarity}"
                 android:progressTint="@color/colorPink"
                 tools:progress="80"/>
 
 
             <TextView
-                android:text="@{@string/match(perfumeData.matchNum)}"
+                android:text="@{@string/match(perfumeData.similarity)}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="매칭율 80%"

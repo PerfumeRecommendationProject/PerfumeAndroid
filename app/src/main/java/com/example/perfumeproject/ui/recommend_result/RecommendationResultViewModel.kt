@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.perfumeproject.PerfumeApplication
 import com.example.perfumeproject.data.PerfumeData
 import com.example.perfumeproject.data.PerfumeRepository
+import com.example.perfumeproject.data.RecommendationConstant
 import com.example.perfumeproject.data.request.ScrapRequest
 import com.example.perfumeproject.data.request.perfumeDescRequest
 import com.example.perfumeproject.di.AuthManager
@@ -33,12 +34,26 @@ class RecommendationResultViewModel @Inject constructor(
     private var _perfumeNum : MutableLiveData<Int> = MutableLiveData()
     var perfumeNum : LiveData<Int> = _perfumeNum
 
+    private var _mode: MutableLiveData<String> = MutableLiveData()
+    var perfumeMode: LiveData<String> = _mode
+
+    private var _pID: MutableLiveData<Int> = MutableLiveData()
+    var pID: LiveData<Int> = _pID
+
+
+
     init {
         _perfumeNum.value = 0
+        auth.search = false
 
     }
 
+    fun setPerfumeMode(mode:String) {
+        _mode.value = mode
+    }
+
     fun getPerfumeData(desc : String) {
+        _searchDesc.value = desc
         perfumeRepository.getNewPerfumeList(perfumeDescRequest(desc),
             onSuccess = {
                 _perfumeData.value = it!!
@@ -51,6 +66,7 @@ class RecommendationResultViewModel @Inject constructor(
     }
 
     fun getPerfumeMatchData(pId : Int) {
+        _pID.value = pId
         perfumeRepository.postBasedPerfume(scrapRequest = ScrapRequest(pId),
             onSuccess = {
                 _perfumeData.value = it!!
@@ -62,6 +78,7 @@ class RecommendationResultViewModel @Inject constructor(
     }
 
     override fun perfumeItemClick(perfumeData: PerfumeData) {
+        perfumeData.isSelected = false
         Intent(PerfumeApplication.appContext, PerfumeDetailActivity::class.java).apply {
             putExtra("perfumeData", perfumeData)
         }.run {
@@ -78,7 +95,7 @@ class RecommendationResultViewModel @Inject constructor(
                     Timber.d("향수 스크랩 성공")
                 },
                 onFailure = {
-                    Timber.d("향수 스크랩 성공")
+                    Timber.d("향수 스크랩 실패")
                 }
             )
         } else {
@@ -94,6 +111,12 @@ class RecommendationResultViewModel @Inject constructor(
 
     override fun onResume() {
         super.onResume()
+        if (_mode.value == RecommendationConstant.NEW) {
+            getPerfumeData(_searchDesc.value!!)
+
+        } else {
+            getPerfumeMatchData(_pID.value!!)
+        }
     }
 }
 

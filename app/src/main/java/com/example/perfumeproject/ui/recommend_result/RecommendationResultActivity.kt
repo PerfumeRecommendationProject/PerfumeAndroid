@@ -13,6 +13,7 @@ import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.recommendation.RecommendationViewModel
 import com.example.perfumeproject.ui.search.PerfumeDataAdapter
 import com.example.perfumeproject.util.ConfirmDialog
+import com.example.perfumeproject.util.VerticalItemDecorator
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,11 +31,15 @@ class RecommendationResultActivity : BaseActivity<ActivityRecommendationResultBi
 
         binding.rvPerfumeList.apply {
             adapter = perfumeAdapter
+            this.addItemDecoration(VerticalItemDecorator(20))
         }
+
+        viewModel.setPerfumeMode(mode!!)
 
         if (mode == RecommendationConstant.NEW) {
             val perfumeDesc: String? = intent.getSerializableExtra("desc") as? String
-            perfumeDesc?.let { viewModel.getPerfumeData(it) } ?: finish()
+            perfumeDesc?.let { viewModel.getPerfumeData(it)} ?: finish()
+
         } else {
             val perfumeId : Int? = intent.getSerializableExtra("pId") as? Int
             perfumeId?.let { viewModel.getPerfumeMatchData(it) } ?:finish()
@@ -64,5 +69,10 @@ class RecommendationResultActivity : BaseActivity<ActivityRecommendationResultBi
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
     }
 }

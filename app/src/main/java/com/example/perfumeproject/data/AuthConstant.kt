@@ -12,4 +12,5 @@ object AuthConstant {
     const val EXPIRE_KEY = "expire"
     const val ID = "id"
     const val SERVER_TOKEN = "server"
+    const val SEARCH = "search"
 }

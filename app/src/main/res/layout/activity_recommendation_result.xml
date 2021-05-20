@@ -38,7 +38,6 @@
             submitList="@{vm.perfumeData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/white"
             android:orientation="vertical"
             android:layout_marginTop="24dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
