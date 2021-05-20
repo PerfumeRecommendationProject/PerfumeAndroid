@@ -10,6 +10,7 @@ import com.example.perfumeproject.databinding.ActivitySearchBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.home.HomeViewModel
 import com.example.perfumeproject.util.ConfirmDialog
+import com.example.perfumeproject.util.VerticalItemDecorator
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +24,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.setVariable(BR.vm, viewModel)
         binding.rvPerfumeList.apply {
             adapter = perfumeAdapter
+            this.addItemDecoration(VerticalItemDecorator(20))
         }
 
         viewModel.loginWarningDlg.observe(this, Observer {

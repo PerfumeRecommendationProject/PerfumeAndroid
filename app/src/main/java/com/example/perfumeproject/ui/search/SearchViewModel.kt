@@ -51,8 +51,11 @@ class SearchViewModel @Inject constructor(
         }
 
     }
+
     override fun perfumeItemClick(perfumeData: PerfumeData) {
-        _pID.value = perfumeData.p_idx
+        if(perfumeData.isSelected) {
+            _pID.value = perfumeData.p_idx
+        }
     }
 
     override fun perfumeLikeClick(perfumeData: PerfumeData) {
@@ -63,7 +66,7 @@ class SearchViewModel @Inject constructor(
                     Timber.d("향수 스크랩 성공")
                 },
                 onFailure = {
-                    Timber.d("향수 스크랩 성공")
+                    Timber.d("향수 스크랩 실패")
                 }
             )
         } else {
@@ -72,8 +75,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun perfumeRecommendationItem() {
+    init {
+        auth.search = true
+    }
 
+    fun perfumeRecommendationItem() {
         Intent(PerfumeApplication.appContext, RecommendationResultActivity::class.java).apply {
             putExtra("mode", RecommendationConstant.BASE)
             putExtra("pId", _pID.value)

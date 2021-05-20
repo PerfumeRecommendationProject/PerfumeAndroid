@@ -4,6 +4,7 @@ package com.example.perfumeproject.di
 import com.example.perfumeproject.data.AuthConstant.AUTO_LOGIN_KEY
 import com.example.perfumeproject.data.AuthConstant.EXPIRE_KEY
 import com.example.perfumeproject.data.AuthConstant.ID
+import com.example.perfumeproject.data.AuthConstant.SEARCH
 import com.example.perfumeproject.data.AuthConstant.SERVER_TOKEN
 import com.example.perfumeproject.data.AuthConstant.TOKEN_KEY
 import com.example.perfumeproject.util.SharedPrefs
@@ -49,4 +50,13 @@ class AuthManager @Inject constructor(val sharedPrefs: SharedPrefs) {
         set(value) {
             sharedPrefs[ID] = value
         }
+
+    var search: Boolean
+        get() {
+            return sharedPrefs[SEARCH, false] ?: false
+        }
+        set(value) {
+            sharedPrefs[SEARCH] = value
+        }
+
 }

@@ -11,11 +11,11 @@ import com.example.perfumeproject.data.PerfumeData
 import com.example.perfumeproject.databinding.ItemPerfumeBinding
 import com.example.perfumeproject.di.AuthManager
 import kr.co.nexters.winepick.util.setOnSingleClickListener
+import okhttp3.internal.notifyAll
+import timber.log.Timber
 
 /**
  * 검색 결과 아이템 recyclerview adapter
- *
- * @since v1.0.0 / 2021.02.08
  */
 class PerfumeDataAdapter(val vm: PerfumeViewModel, val authManager: AuthManager) :
     ListAdapter<PerfumeData, PerfumeDataViewHolder>(PerfumeDataDiffUtilCallBack) {
@@ -26,9 +26,12 @@ class PerfumeDataAdapter(val vm: PerfumeViewModel, val authManager: AuthManager)
 
         return PerfumeDataViewHolder(binding).apply {
             binding.root.setOnSingleClickListener {
+                if(authManager.search) {
+                    vm.selectedPerfumeData(binding.perfumeData!!)
+                    binding.perfumeData = binding.perfumeData!!.apply { isSelected = !this.isSelected!! }
+                    notifyDataSetChanged()
+                }
                 vm.perfumeItemClick(binding.perfumeData!!)
-                binding.perfumeData = binding.perfumeData!!.apply { isSelected = !this.isSelected!! }
-
             }
 
             binding.imgPerfumeLike.setOnSingleClickListener {
