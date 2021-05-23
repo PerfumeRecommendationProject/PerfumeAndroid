@@ -37,12 +37,12 @@
 
             <ImageView
                 android:id="@+id/img_perfume_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:src="@drawable/like_success"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                tools:src="@drawable/bookmark_check"
                 android:padding="16dp"
                 app:onSingleClick="@{vm::perfumeLikeClick}"
-                android:src="@{vm.wineLike? @drawable/like_success: @drawable/like_false}"
+                android:src="@{vm.wineLike? @drawable/bookmark_check: @drawable/bookmark_uncheck}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_perfume"/>
 
