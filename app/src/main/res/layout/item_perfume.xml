@@ -64,10 +64,11 @@
 
         <ImageView
             android:id="@+id/img_perfume_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@{perfumeData.likeYn? @drawable/like_success: @drawable/like_false}"
-            tools:src="@drawable/like_success"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:src="@{perfumeData.likeYn? @drawable/bookmark_check: @drawable/bookmark_uncheck}"
+            tools:src="@drawable/bookmark_uncheck"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         
@@ -86,7 +87,7 @@
                 android:id="@+id/pb_perfume_match"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
-                android:layout_height="24dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
