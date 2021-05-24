@@ -41,6 +41,7 @@ class PerfumeDetailViewModel @Inject constructor(
                 scrapRequest = ScrapRequest(_perfumeData.value!!.p_idx),
                 onSuccess = {
                    _wineLike.value = !_wineLike.value!!
+                    Timber.e("${_wineLike.value}")
                     Timber.d("향수 스크랩 성공")
                 },
                 onFailure = {

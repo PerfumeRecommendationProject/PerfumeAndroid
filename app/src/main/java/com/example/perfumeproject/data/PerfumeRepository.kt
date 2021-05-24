@@ -15,8 +15,6 @@ import javax.inject.Inject
 class PerfumeRepository @Inject constructor(
     private val api: PerfumeService, private val authManager: AuthManager
 ) {
-    val dictionaries: MutableMap<Int, Array<String>> = mutableMapOf()
-
     init {
         val appContext = PerfumeApplication.getGlobalApplicationContext()
     }
@@ -58,7 +56,7 @@ class PerfumeRepository @Inject constructor(
 
     fun getSearchPerfume(
         p_name : String,
-        onSuccess: (List<PerfumeData>) -> Unit,
+        onSuccess: (List<PerfumeData>?) -> Unit,
         onFailure: () -> Unit
     ) {
         api.getSearchPerfume(p_name).safeEnqueue (
@@ -81,11 +79,11 @@ class PerfumeRepository @Inject constructor(
     }
 
     fun getScrapData(
-        onSuccess: (List<PerfumeData>) -> Unit,
+        onSuccess: (List<PerfumeData>?) -> Unit,
         onFailure: () -> Unit
     ) {
         api.getScrapData().safeEnqueue(
-            onSuccess = {onSuccess(it.result!!)},
+            onSuccess = {onSuccess(it.result)},
             onFailure = {onFailure()},
             onError = {onFailure()}
         )
@@ -93,7 +91,7 @@ class PerfumeRepository @Inject constructor(
 
     fun getNewPerfumeList(
         perfumeDescRequest: perfumeDescRequest,
-        onSuccess: (List<PerfumeData>) -> Unit,
+        onSuccess: (List<PerfumeData>?) -> Unit,
         onFailure: () -> Unit
     ) {
         api.getNewPerfumeList(perfumeDescRequest).safeEnqueue(
@@ -105,7 +103,7 @@ class PerfumeRepository @Inject constructor(
 
     fun postBasedPerfume(
         scrapRequest: ScrapRequest,
-        onSuccess: (List<PerfumeData>) -> Unit,
+        onSuccess: (List<PerfumeData>?) -> Unit,
         onFailure: () -> Unit
     ) {
         api.postBasedPerfume(scrapRequest).safeEnqueue(
@@ -114,18 +112,4 @@ class PerfumeRepository @Inject constructor(
             onError = {onFailure()}
         )
     }
-
-
-//    fun getWine(
-//        wineId: Int,
-//        onSuccess: (WineResult) -> Unit,
-//        onFailure: () -> Unit
-//    ) {
-//        api.getWine(wineId).safeEnqueue(
-//            onSuccess = { onSuccess(it.result!!) },
-//            onFailure = { onFailure() },
-//            onError = { onFailure() }
-//        )
-//    }
-
 }

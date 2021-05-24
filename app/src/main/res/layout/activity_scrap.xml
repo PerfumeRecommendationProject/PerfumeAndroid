@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="com.example.perfumeproject.ui.scrap.ScrapViewModel" />
@@ -20,7 +21,7 @@
             android:id="@+id/tv_scrap_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="스크랩 된 향수 리스트"
+            android:text="@{@string/perfume_scrap_num(vm.scrapData)}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20dp"
@@ -28,11 +29,49 @@
             android:textColor="@color/black"
             android:layout_marginVertical="24dp"/>
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{vm.scrapData == 0 ? View.VISIBLE : View.GONE }"
+            app:layout_constraintTop_toBottomOf="@id/tv_scrap_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/box"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintStart_toStartOf="@id/tv_empty"
+                app:layout_constraintEnd_toEndOf="@id/tv_empty"
+                app:layout_constraintBottom_toTopOf="@id/tv_empty"/>
+
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="스크랩된 향수 리스트가 없습니다!"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rv_scrap"
             app:spanCount="3"
+            android:visibility="@{vm.scrapData == 0 ? View.GONE : View.VISIBLE }"
             app:submitList="@{vm.perfumeData}"
             android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

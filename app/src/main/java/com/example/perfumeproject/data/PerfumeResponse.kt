@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 data class PerfumeResponse<T>(
     @SerialName("data")
     @SerializedName("data")
-    val result: T,
+    val result: T?,
 
     @SerializedName("message")
     @SerialName("message")

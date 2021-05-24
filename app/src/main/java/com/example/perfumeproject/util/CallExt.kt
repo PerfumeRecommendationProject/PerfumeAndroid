@@ -22,7 +22,7 @@ fun <T> Call<T>.safeEnqueue(
             ) {
                 if ( response.isSuccessful ) {
                     response.body()!!.let {
-                        onSuccess(it)
+                        onSuccess(it!!)
                     } ?: onFailure(response)
                 } else {
                     onFailure(response)

@@ -32,7 +32,7 @@ interface PerfumeService {
     ) : Call<PerfumeResponse<Unit>>
 
     @GET("scrap")
-    fun getScrapData() : Call<PerfumeResponse<List<PerfumeData>>>
+    fun getScrapData() : Call<PerfumeResponse<List<PerfumeData>?>>
 
     @POST("perfume/recommend/new")
     fun getNewPerfumeList(
