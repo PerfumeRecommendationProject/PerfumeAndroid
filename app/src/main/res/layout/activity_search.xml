@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="com.example.perfumeproject.ui.search.SearchViewModel" />
@@ -64,6 +65,7 @@
             submitList="@{vm.perfumeData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="@{vm.searchVisible ? View.VISIBLE : View.GONE}"
             android:orientation="vertical"
             android:layout_marginTop="24dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

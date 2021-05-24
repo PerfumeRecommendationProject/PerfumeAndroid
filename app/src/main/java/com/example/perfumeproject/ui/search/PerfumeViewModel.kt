@@ -91,17 +91,10 @@ abstract class PerfumeViewModel constructor(
             for (i in 0 until results.size) {
                 results[i].isSelected =  false
             }
-            for (i in 0 until results.size) {
-                Timber.e("selected !! ${results[i].isSelected}")
-            }
             results.removeAt(replaceIndex)
             results.add(replaceIndex, prevPerfumeData.copy(isSelected = prevPerfumeData.clickedSelected))
-
             _perfumeData.value = results
 
-            for (i in 0 until results.size) {
-                Timber.e("selected22 !! ${results[i].isSelected}")
-            }
         }
     }
 

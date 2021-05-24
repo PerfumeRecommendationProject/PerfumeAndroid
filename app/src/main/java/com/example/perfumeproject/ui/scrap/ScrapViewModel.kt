@@ -1,6 +1,8 @@
 package com.example.perfumeproject.ui.scrap
 
 import android.content.Intent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.perfumeproject.PerfumeApplication
 import com.example.perfumeproject.data.PerfumeData
 import com.example.perfumeproject.data.PerfumeRepository
@@ -18,16 +20,23 @@ class ScrapViewModel @Inject constructor(
     private val auth: AuthManager,
 ) : ScrapPerfumeViewModel(perfumeRepository) {
 
+    private var _scrapData: MutableLiveData<Int> = MutableLiveData()
+    var scrapData: LiveData<Int> = _scrapData
+
     init {
-
-        getScrapPerfume()
-
+        _scrapData.value = 0
     }
 
     fun getScrapPerfume() {
         perfumeRepository.getScrapData(
             onSuccess = {
-                _perfumeData.value = it
+                if(it.isNullOrEmpty()) {
+                    _scrapData.value = 0
+
+                } else {
+                    _perfumeData.value = it!!
+                    _scrapData.value = it!!.size
+                }
 
             }, onFailure = {
 

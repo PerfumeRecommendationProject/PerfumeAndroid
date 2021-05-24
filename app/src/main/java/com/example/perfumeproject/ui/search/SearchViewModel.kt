@@ -31,6 +31,9 @@ class SearchViewModel @Inject constructor(
     private var _pID: MutableLiveData<Int> = MutableLiveData()
     val pID: LiveData<Int> = _pID
 
+    private var _searchVisible: MutableLiveData<Boolean> = MutableLiveData()
+    val searchVisible: LiveData<Boolean> = _searchVisible
+
     val searchTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
@@ -38,7 +41,12 @@ class SearchViewModel @Inject constructor(
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             perfumeRepository.getSearchPerfume(p_name = p0.toString(),
                 onSuccess = {
-                    _perfumeData.value = it
+                    if (it.isNullOrEmpty()) {
+                        _searchVisible.value = false
+                    } else {
+                        _perfumeData.value = it!!
+                        _searchVisible.value = true
+                    }
                 },
                 onFailure = {
 
@@ -50,6 +58,10 @@ class SearchViewModel @Inject constructor(
         override fun afterTextChanged(p0: Editable?) {
         }
 
+    }
+    init {
+        auth.search = true
+        _searchVisible.value = false
     }
 
     override fun perfumeItemClick(perfumeData: PerfumeData) {
@@ -75,14 +87,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    init {
-        auth.search = true
-    }
+
 
     fun perfumeRecommendationItem() {
+        Timber.e("selected - pID ${_pID.value!!}")
         Intent(PerfumeApplication.appContext, RecommendationResultActivity::class.java).apply {
             putExtra("mode", RecommendationConstant.BASE)
-            putExtra("pId", _pID.value)
+            putExtra("pId", _pID.value!!)
         }.run {
             PerfumeApplication.getGlobalApplicationContext()
                 .startActivity(this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

@@ -14,5 +14,6 @@
     <string name="perfume_description">PERFUME DESCRIPTION</string>
 
     <string name="perfume_recommendation">향수 추천 결과 %d</string>
+    <string name="perfume_scrap_num">스크랩 된 향수 %d</string>
 
 </resources>
