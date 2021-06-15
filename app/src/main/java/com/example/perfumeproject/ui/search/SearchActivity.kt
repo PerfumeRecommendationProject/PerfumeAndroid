@@ -1,14 +1,18 @@
 package com.example.perfumeproject.ui.search
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.perfumeproject.BR
+import com.example.perfumeproject.PerfumeApplication
 import com.example.perfumeproject.R
+import com.example.perfumeproject.data.RecommendationConstant
 import com.example.perfumeproject.databinding.ActivitySearchBinding
 import com.example.perfumeproject.ui.base.BaseActivity
 import com.example.perfumeproject.ui.home.HomeViewModel
+import com.example.perfumeproject.ui.recommend_result.RecommendationResultActivity
 import com.example.perfumeproject.util.ConfirmDialog
 import com.example.perfumeproject.util.VerticalItemDecorator
 import com.kakao.sdk.user.UserApiClient
@@ -26,6 +30,22 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             adapter = perfumeAdapter
             this.addItemDecoration(VerticalItemDecorator(20))
         }
+
+
+        viewModel.startIntent.observe(this, Observer {
+
+            if(it) {
+                Intent(PerfumeApplication.appContext, RecommendationResultActivity::class.java).apply {
+                    putExtra("mode", RecommendationConstant.BASE)
+                    putExtra("pId", viewModel.pID.value!!)
+                }.run {
+                    startActivity(this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    finish()
+                }
+            }
+        })
+
+
 
         viewModel.loginWarningDlg.observe(this, Observer {
             if (it) {

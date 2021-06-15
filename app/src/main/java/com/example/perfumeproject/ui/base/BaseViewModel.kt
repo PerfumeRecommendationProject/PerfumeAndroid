@@ -35,6 +35,11 @@ open class BaseViewModel @Inject constructor(
         Timber.i("$coroutineContext $throwable")
     }
 
+
+    /** viewModel 에서 [LoadingAnimation] 를 control 하기 위한 LiveData */
+    private val _loadingVisible = MutableLiveData(false)
+    val loadingVisible: LiveData<Boolean> = _loadingVisible
+
     /** 토스트 메시지 */
     internal val _toastMeesageText = MutableLiveData("")
     val toastMessageText: LiveData<String> = _toastMeesageText
@@ -84,6 +89,17 @@ open class BaseViewModel @Inject constructor(
      */
     protected fun Disposable.addDisposable() {
         compositeDisposable.add(this)
+    }
+
+
+    /** [LoadingAnimation]을 가린다. */
+    internal fun hideLoading() {
+        _loadingVisible.value = false
+    }
+
+    /** [LoadingAnimation]을 보여준다. */
+    internal fun showLoading() {
+        _loadingVisible.value = true
     }
 
     /**

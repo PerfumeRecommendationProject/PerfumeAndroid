@@ -19,11 +19,20 @@ import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.perfumeproject.PerfumeApplication
 import com.example.perfumeproject.R
 import com.example.perfumeproject.util.OnSingleClickListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Resource Int 확장함수
+ *
+ * @since v1.0.0 / 2021.02.24
+ */
+
+/** [Res Int 값][Int] 을 기반으로 색상값을 가져온다. */
+fun Int.getColor() = ContextCompat.getColor(PerfumeApplication.getGlobalApplicationContext(), this)
 
 fun View.setVisible() {
     this.visibility = View.VISIBLE

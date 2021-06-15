@@ -32,9 +32,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-const val CONNECT_TIMEOUT = 15.toLong()
-const val WRITE_TIMEOUT = 15.toLong()
-const val READ_TIMEOUT = 15.toLong()
+const val CONNECT_TIMEOUT = 30.toLong()
+const val WRITE_TIMEOUT = 30.toLong()
+const val READ_TIMEOUT = 30.toLong()
 
 const val BASE_URL = "http://13.209.121.249/"
 

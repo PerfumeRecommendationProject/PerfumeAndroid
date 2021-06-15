@@ -31,7 +31,12 @@ class PerfumeDetailViewModel @Inject constructor(
     }
 
     fun getPerfumeData(perfumeData: PerfumeData) {
-        _perfumeData.value = perfumeData
+        if(perfumeData.notes!!.size > 6) {
+            perfumeData.notes = perfumeData.notes.subList(0,6)
+
+        } else {
+            _perfumeData.value = perfumeData
+        }
         _wineLike.value = perfumeData.likeYn
     }
 
@@ -41,7 +46,6 @@ class PerfumeDetailViewModel @Inject constructor(
                 scrapRequest = ScrapRequest(_perfumeData.value!!.p_idx),
                 onSuccess = {
                    _wineLike.value = !_wineLike.value!!
-                    Timber.e("${_wineLike.value}")
                     Timber.d("향수 스크랩 성공")
                 },
                 onFailure = {

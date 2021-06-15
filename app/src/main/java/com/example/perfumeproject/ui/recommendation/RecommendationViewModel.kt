@@ -14,6 +14,7 @@ import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.perfumeproject.ui.detail.PerfumeDetailActivity
 import com.example.perfumeproject.ui.recommend_result.RecommendationResultActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,29 +24,43 @@ class RecommendationViewModel @Inject constructor(
 ) : BaseViewModel(perfumeRepository) {
 
     private var _searchDesc: MutableLiveData<String> = MutableLiveData()
-    var searchDesc: LiveData<String> = _searchDesc
+    val searchDesc: LiveData<String> = _searchDesc
+
+
+    private var _warningEng = MutableLiveData<Boolean>()
+    val warningEng : LiveData<Boolean> = _warningEng
+
+
+    private var _startIntent = MutableLiveData<Boolean>()
+    val startIntent : LiveData<Boolean> = _startIntent
 
     val searchTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            _searchDesc.value = p0.toString()
+            if(!p0.toString().isNullOrEmpty()) {
+                val ps: Pattern = Pattern.compile("^[a-zA-Z0-9\\s!~`@#\$%\\^?,. ]+$")
+                _warningEng.value = !ps.matcher(p0).matches()
+                _searchDesc.value = p0.toString()
+            } else {
+                _warningEng.value = false
+            }
         }
 
         override fun afterTextChanged(p0: Editable?) {
         }
 
     }
+    init {
+        _warningEng.value = false
+        _startIntent.value = false
+    }
 
     fun perfumeRecommendationItem() {
 
-        Intent(PerfumeApplication.appContext, RecommendationResultActivity::class.java).apply {
-            putExtra("mode",RecommendationConstant.NEW)
-            putExtra("desc", _searchDesc.value)
-        }.run {
-            PerfumeApplication.getGlobalApplicationContext()
-                .startActivity(this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        if(!_warningEng.value!!) {
+            _startIntent.value = true
         }
 
     }
