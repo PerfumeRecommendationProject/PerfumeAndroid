@@ -7,6 +7,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.perfumeproject.di.AuthManager
 import com.kakao.sdk.auth.model.OAuthToken
@@ -32,6 +34,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : AppCompatActivity() {
     protected lateinit var binding: B
+
+
 
     /**
      * [Dispatchers.Main]을 기본으로 사용하고
@@ -92,6 +96,14 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         /** [uiScope] 사용 예 */
         uiScope.launch { }
+
+        // LoadingAnimation 통제
+        viewModel?.loadingVisible?.observe(this, {
+            if (it)
+                LoadingAnimation.show(this)
+            else
+                LoadingAnimation.dismiss()
+        })
 
 
         viewModel?.loginIntent?.observe(this, {

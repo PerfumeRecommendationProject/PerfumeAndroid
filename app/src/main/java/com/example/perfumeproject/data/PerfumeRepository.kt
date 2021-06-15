@@ -107,7 +107,7 @@ class PerfumeRepository @Inject constructor(
         onFailure: () -> Unit
     ) {
         api.postBasedPerfume(scrapRequest).safeEnqueue(
-            onSuccess = {onSuccess(it.result!!)},
+            onSuccess = {onSuccess(it.result)},
             onFailure = {onFailure()},
             onError = {onFailure()}
         )

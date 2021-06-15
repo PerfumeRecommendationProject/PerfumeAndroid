@@ -12,5 +12,6 @@
     <color name="colorPink">#ff3985</color>
     <color name="colorGray82">#afafaf</color>
     <color name="colorBlack66">#66000000</color>
+    <color name="loading_animation_progressbar_solid">#C4C4C4</color>
 
 </resources>

@@ -29,13 +29,16 @@ data class PerfumeData(
         var likeYn : Boolean = false,
         @SerializedName("similarity")
         @SerialName("similarity")
-        val similarity : Int,
+        val similarity : String,
         var isSelected : Boolean ,
 ): java.io.Serializable {
         val clickedLikeYn: Boolean
                 get() = !(likeYn ?: true)
+        val similar = Integer.parseInt(similarity)
         val matchVisible : Boolean
-                get() = similarity > 0
+                get() = similar > 0
         val clickedSelected : Boolean
                 get() = !(isSelected ?: true)
+
+
 }

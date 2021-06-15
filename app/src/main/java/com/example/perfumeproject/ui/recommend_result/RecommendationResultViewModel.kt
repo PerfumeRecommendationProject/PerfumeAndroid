@@ -53,27 +53,35 @@ class RecommendationResultViewModel @Inject constructor(
     }
 
     fun getPerfumeData(desc : String) {
+        showLoading()
         _searchDesc.value = desc
         perfumeRepository.getNewPerfumeList(perfumeDescRequest(desc),
             onSuccess = {
-                _perfumeData.value = it!!
-                _perfumeNum.value = it.size
+                if(!it.isNullOrEmpty()) {
+                    _perfumeData.value = it
+                    _perfumeNum.value = it.size
+                }
+                hideLoading()
             },
             onFailure = {
-
+                hideLoading()
             })
 
     }
 
     fun getPerfumeMatchData(pId : Int) {
+        showLoading()
         _pID.value = pId
         perfumeRepository.postBasedPerfume(scrapRequest = ScrapRequest(pId),
             onSuccess = {
-                _perfumeData.value = it!!
-                _perfumeNum.value = it.size
+                if(!it.isNullOrEmpty()) {
+                    _perfumeData.value = it
+                    _perfumeNum.value = it.size
+                }
+                hideLoading()
             },
             onFailure = {
-
+                hideLoading()
             })
     }
 
